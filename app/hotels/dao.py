@@ -12,7 +12,7 @@ class HotelsDAO(BaseDAO):
     model = Hotels
 
     @classmethod
-    async def find_all(
+    async def search_for_hotels(
             cls,
             location,
             date_from,

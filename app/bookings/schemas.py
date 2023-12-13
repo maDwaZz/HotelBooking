@@ -11,7 +11,10 @@ class SBooking(BaseModel):
     price: int
     total_cost: int
     total_days: int
-    image_id: int
-    name: str
-    description: str
-    services: list[str]
+    # image_id: int
+    # name: str
+    # description: str
+    # services: list[str]
+
+    class Config:
+        from_attributes = True

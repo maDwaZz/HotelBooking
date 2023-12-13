@@ -7,6 +7,7 @@ from app.bookings.schemas import SBooking
 from app.users.dependencies import get_current_user
 from app.exceptions import RoomCannotBeBookedException
 from app.users.models import Users
+from app.tasks.tasks import send_booking_confirmation_email
 
 router = APIRouter(
     prefix="/bookings",
@@ -27,6 +28,10 @@ async def add_booking(
     booking = await BookingDAO.add(user.id, room_id, date_from, date_to)
     if not booking:
         raise RoomCannotBeBookedException
+
+    booking_dict = SBooking.model_validate(booking).model_dump()
+    send_booking_confirmation_email.delay(booking_dict, user.email)
+    return booking_dict
 
 
 @router.delete("/{booking_id}")
